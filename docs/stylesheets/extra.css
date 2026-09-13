@@ -1,39 +1,277 @@
-:root {
-  --md-primary-fg-color: #1967d2;
-  --md-accent-fg-color: #087a72;
+/* ---------------------------------------------------------------------------
+   FlowRoute docs theme
+   Near-black chrome matched to the OpenFirst mark, with a single indigo accent.
+   --------------------------------------------------------------------------- */
+
+/* Brand palette ----------------------------------------------------------- */
+
+[data-md-color-primary="custom"] {
+  --md-primary-fg-color: #15171c;
+  --md-primary-fg-color--light: #2a2d36;
+  --md-primary-fg-color--dark: #0d0f13;
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: rgba(255, 255, 255, 0.72);
 }
 
-.md-typeset h1,
-.md-typeset h2 {
-  letter-spacing: -0.025em;
+[data-md-color-accent="custom"] {
+  --md-accent-fg-color: #4f46e5;
+  --md-accent-fg-color--transparent: rgba(79, 70, 229, 0.1);
+  --md-accent-bg-color: #ffffff;
+  --md-accent-bg-color--light: rgba(255, 255, 255, 0.7);
 }
+
+[data-md-color-scheme="default"] {
+  --md-typeset-a-color: #4f46e5;
+  --fr-border: rgba(15, 17, 22, 0.09);
+  --fr-surface: #fbfbfd;
+  --fr-shadow: 0 1px 2px rgba(15, 17, 22, 0.04), 0 4px 16px rgba(15, 17, 22, 0.04);
+}
+
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: #0e0f13;
+  --md-typeset-a-color: #a5b4fc;
+  --md-accent-fg-color: #818cf8;
+  --md-accent-fg-color--transparent: rgba(129, 140, 248, 0.14);
+  --fr-border: rgba(255, 255, 255, 0.1);
+  --fr-surface: #16181e;
+  --fr-shadow: none;
+}
+
+/* Typography -------------------------------------------------------------- */
+
+body {
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11" 1, "ss01" 1;
+}
+
+.md-typeset {
+  font-size: 0.76rem;
+  line-height: 1.72;
+}
+
+.md-typeset h1 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  margin-bottom: 1.2rem;
+  color: var(--md-default-fg-color);
+}
+
+.md-typeset h2 {
+  font-size: 1.4rem;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  margin-top: 2.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--fr-border);
+}
+
+.md-typeset h3 {
+  font-size: 1.05rem;
+  font-weight: 620;
+  letter-spacing: -0.015em;
+  margin-top: 1.8rem;
+}
+
+.md-typeset table:not([class]) th {
+  font-weight: 620;
+  letter-spacing: -0.01em;
+}
+
+/* Header — kept deliberately plain: mark, name, search, theme toggle ------- */
+
+.md-header {
+  box-shadow: none;
+}
+
+.md-header__title {
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.md-header__button.md-logo {
+  padding: 0 0.2rem;
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 1.25rem;
+  width: auto;
+}
+
+/* Keep the GitHub affordance, drop the long "open-first/FlowRoute" label */
+.md-header__source .md-source__repository {
+  display: none;
+}
+
+.md-header__source {
+  max-width: 2.2rem;
+  min-width: 0;
+  margin-left: 0.4rem;
+}
+
+/* Sidebar ----------------------------------------------------------------- */
+
+.md-nav {
+  font-size: 0.7rem;
+}
+
+/* The primary sidebar repeats the site name above the tree. It sits directly
+   under the header that already says it, so hide it on desktop. The mobile
+   drawer still needs its title, so this is scoped to the permanent sidebar. */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary .md-nav--primary > .md-nav__title {
+    display: none;
+  }
+
+  .md-sidebar--primary .md-nav--primary > .md-nav__list {
+    padding-top: 0.4rem;
+  }
+}
+
+/* Scoped to the table-of-contents heading; the mobile drawer header keeps
+   Material's default sizing so it still reads as a drawer title. */
+.md-sidebar--secondary .md-nav__title {
+  font-size: 0.65rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+.md-nav__link {
+  border-radius: 0.3rem;
+  padding: 0.24rem 0.45rem;
+  margin: 0.04rem 0;
+  transition: background-color 100ms ease, color 100ms ease;
+}
+
+.md-nav__link:hover {
+  background-color: var(--md-accent-fg-color--transparent);
+}
+
+.md-nav__item .md-nav__link--active {
+  background-color: var(--md-accent-fg-color--transparent);
+  font-weight: 600;
+}
+
+/* Code -------------------------------------------------------------------- */
 
 .md-typeset code {
-  border-radius: 0.25rem;
+  border-radius: 0.28rem;
+  font-size: 0.84em;
+  padding: 0.12em 0.36em;
 }
+
+.md-typeset pre > code {
+  border: 1px solid var(--fr-border);
+  border-radius: 0.5rem;
+  padding: 0.85rem 1rem;
+}
+
+/* Tables ------------------------------------------------------------------ */
+
+.md-typeset table:not([class]) {
+  border: 1px solid var(--fr-border);
+  border-radius: 0.5rem;
+  box-shadow: none;
+  font-size: 0.7rem;
+  overflow: hidden;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--fr-surface);
+  border-bottom: 1px solid var(--fr-border);
+}
+
+.md-typeset table:not([class]) td {
+  border-top: 1px solid var(--fr-border);
+}
+
+/* Admonitions ------------------------------------------------------------- */
+
+.md-typeset .admonition,
+.md-typeset details {
+  border: 1px solid var(--fr-border);
+  border-left-width: 2px;
+  border-radius: 0.5rem;
+  box-shadow: none;
+  font-size: 0.72rem;
+}
+
+/* Outcome cards ----------------------------------------------------------- */
 
 .flowroute-outcomes {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin: 1.25rem 0;
+  gap: 0.7rem;
+  margin: 1.6rem 0;
 }
 
 .flowroute-outcomes > div {
-  padding: 1rem;
-  border: 0.05rem solid var(--md-default-fg-color--lightest);
-  border-radius: 0.5rem;
+  background-color: var(--fr-surface);
+  border: 1px solid var(--fr-border);
+  border-radius: 0.6rem;
+  box-shadow: var(--fr-shadow);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  padding: 0.95rem 1rem;
+  transition: border-color 140ms ease, transform 140ms ease;
+}
+
+.flowroute-outcomes > div:hover {
+  border-color: var(--md-accent-fg-color);
+  transform: translateY(-1px);
 }
 
 .flowroute-outcomes strong {
+  color: var(--md-accent-fg-color);
   display: block;
-  margin-bottom: 0.4rem;
   font-family: var(--md-code-font-family);
-  font-size: 0.72rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.45rem;
+  text-transform: uppercase;
 }
+
+/* Footer — one quiet line, no dark slab, no prev/next ---------------------- */
+
+.md-footer {
+  background-color: transparent;
+}
+
+.md-footer-meta {
+  background-color: transparent;
+  border-top: 1px solid var(--fr-border);
+}
+
+.md-footer-meta__inner {
+  justify-content: center;
+  padding: 0.9rem 0.8rem;
+}
+
+.md-copyright {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.62rem;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.md-copyright__highlight {
+  color: var(--md-default-fg-color--light);
+}
+
+/* Responsive -------------------------------------------------------------- */
 
 @media screen and (max-width: 44.984375em) {
   .flowroute-outcomes {
     grid-template-columns: 1fr;
+  }
+
+  .md-typeset h1 {
+    font-size: 1.65rem;
   }
 }
