@@ -1,0 +1,89 @@
+site_name: FlowRoute Developer Docs
+site_description: Developer guide for safe, selective routing to deterministic workflows.
+site_dir: site
+docs_dir: docs
+strict: true
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - content.code.copy
+    - content.tabs.link
+    - search.highlight
+    - search.suggest
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - Installation: getting-started/installation.md
+      - Quickstart: getting-started/quickstart.md
+      - Deploy these docs: getting-started/deploy-docs.md
+  - Developer guides:
+      - Workflow contracts: guides/workflow-contracts.md
+      - Python integration: guides/python-integration.md
+      - HTTP API: guides/http-api.md
+      - Command-line interface: guides/cli.md
+  - Concepts:
+      - Routing pipeline: concepts/routing-pipeline.md
+      - Decisions and reasons: concepts/decisions.md
+      - Safety boundary: concepts/safety-boundary.md
+      - Architecture notes: architecture.md
+  - Models and data:
+      - Hugging Face backends: models/hugging-face.md
+      - Training: models/training.md
+      - Dataset design: models/dataset-design.md
+      - Evaluation: models/evaluation.md
+  - Operations:
+      - Production mode: operations/production-mode.md
+      - Artifact manifests: operations/artifact-manifests.md
+      - Container deployment: operations/container-deployment.md
+      - Production checklist: operations/production.md
+      - Troubleshooting: operations/troubleshooting.md
+  - Reference:
+      - Configuration: reference/configuration.md
+      - Python models: reference/python-models.md
+      - Repository map: reference/repository-map.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+plugins:
+  - search
+
+extra_css:
+  - stylesheets/extra.css
+
+copyright: FlowRoute contributors · Apache-2.0

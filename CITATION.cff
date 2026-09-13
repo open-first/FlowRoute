@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use FlowRoute in research, please cite the software and its accompanying paper."
+title: "FlowRoute"
+type: software
+version: 0.2.0
+date-released: 2026-09-13
+authors:
+  - family-names: "Norouzi"
+    given-names: "Ali"
+    email: "anorouzi.work@gmail.com"
+license: Apache-2.0
+abstract: >-
+  A small, example-aware router for selecting deterministic workflows without
+  generative language-model inference, with calibrated abstention and explicit
+  execution-safety boundaries.
+keywords:
+  - workflow routing
+  - semantic routing
+  - selective prediction
+  - sentence embeddings
+preferred-citation:
+  type: article
+  title: "FlowRoute: Small, Example-Aware Workflow Routing Without Generative Inference"
+  authors:
+    - family-names: "Norouzi"
+      given-names: "Ali"
+      email: "anorouzi.work@gmail.com"
+  year: 2026

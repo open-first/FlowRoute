@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install package
+        run: python -m pip install -e ".[api,dev]"
+
+      - name: Lint
+        run: ruff check src tests training examples
+
+      - name: Type check
+        run: mypy --no-incremental src/flowroute
+
+      - name: Test
+        run: pytest -q
+
+      - name: Build distributions
+        if: matrix.python-version == '3.12'
+        run: |
+          python -m build
+          python -m pip install --force-reinstall --no-deps dist/*.whl
+          python -c "import flowroute; print(flowroute.__version__)"
+
+      - name: Validate package dependencies
+        if: matrix.python-version == '3.12'
+        run: |
+          python -m pip check
+          pip-audit --requirement requirements-audit.txt --progress-spinner off
+
+      - name: Build documentation
+        if: matrix.python-version == '3.12'
+        run: |
+          python -m pip install -r requirements-docs.txt
+          mkdocs build --strict

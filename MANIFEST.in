@@ -1,0 +1,12 @@
+include CONTRIBUTING.md
+include CHANGELOG.md
+include CITATION.cff
+include Dockerfile
+include SECURITY.md
+include mkdocs.yml
+include requirements-audit.txt
+include requirements-docs.txt
+recursive-include configs *.yaml
+recursive-include docs *.css *.md
+recursive-include examples *.jsonl *.py *.yaml
+recursive-include training *.md *.py

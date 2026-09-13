@@ -1,0 +1,182 @@
+catalog_version: demo-2026-09-04
+metadata:
+  language: en
+  description: Demonstration catalog for FlowRoute integration tests.
+workflows:
+  - id: orders.get_status
+    version: 1.0.0
+    name: Get order status
+    description: Look up the current fulfillment and delivery status of one customer order.
+    positive_capabilities:
+      - check where an order is
+      - track an existing order
+      - retrieve shipping status
+    exclusions:
+      - cancel an order
+      - refund a payment
+    required_inputs:
+      - name: order_id
+        description: Unique order number.
+        aliases: [order_number]
+        pattern: '\border(?:\s+(?:id|number))?\s*[:#-]?\s*(?P<value>(?=[A-Z0-9_-]*\d)[A-Z0-9][A-Z0-9_-]{2,})\b'
+    side_effect: read_only
+    risk_tier: low
+    confirmation: never
+    examples:
+      - Where is order 4812?
+      - Track my order ORD-9001.
+    owner: commerce-platform
+
+  - id: calendar.cancel_event
+    version: 1.0.0
+    name: Cancel a calendar event
+    description: Cancel one existing calendar event that the current user is allowed to modify.
+    positive_capabilities:
+      - cancel an existing meeting
+      - remove one scheduled calendar event
+    exclusions:
+      - decline an invitation without canceling the event
+      - delete an entire recurring series without explicit confirmation
+      - create or reschedule a meeting
+    required_inputs:
+      - name: event_id
+        description: Stable identifier of the event to cancel.
+        pattern: '\b(?P<value>evt_[A-Za-z0-9_-]+)\b'
+    optional_inputs:
+      - name: notify_attendees
+        description: Whether attendees should receive a cancellation notice.
+    preconditions:
+      - event exists
+      - caller may modify event
+    side_effect: external_write
+    risk_tier: medium
+    confirmation: required_if_recurring
+    examples:
+      - Cancel my 3 PM design review.
+      - Remove event evt_92ab from my calendar.
+    owner: calendar-platform
+
+  - id: calendar.create_event
+    version: 1.0.0
+    name: Create a calendar event
+    description: Schedule one new calendar event with a title and an explicit start time.
+    positive_capabilities:
+      - schedule a new meeting
+      - book a calendar event
+      - add an appointment to the calendar
+    exclusions:
+      - cancel or reschedule an existing event
+      - find a mutually convenient time
+    required_inputs:
+      - name: title
+        description: Event title supplied in trusted context.
+      - name: start_time
+        description: ISO timestamp supplied in trusted context.
+    optional_inputs:
+      - name: attendees
+        description: People invited to the event.
+    side_effect: external_write
+    risk_tier: medium
+    confirmation: always
+    examples:
+      - Schedule a product review tomorrow.
+      - Add a dentist appointment to my calendar.
+    owner: calendar-platform
+
+  - id: billing.refund_payment
+    version: 1.0.0
+    name: Refund a payment
+    description: Issue a refund for one captured payment after eligibility checks.
+    positive_capabilities:
+      - refund a customer's payment
+      - return a captured charge
+    exclusions:
+      - cancel a subscription
+      - dispute a charge
+      - refund multiple payments at once
+    required_inputs:
+      - name: payment_id
+        description: Identifier of the captured payment.
+        pattern: '\b(?P<value>pay_[A-Za-z0-9_-]+)\b'
+    preconditions:
+      - payment is captured
+      - caller has refund permission
+    side_effect: external_write
+    risk_tier: high
+    confirmation: always
+    examples:
+      - Refund payment pay_90210.
+      - Return the customer's captured charge.
+    owner: billing-platform
+
+  - id: account.update_email
+    version: 1.0.0
+    name: Update account email
+    description: Change the authenticated user's account email address to a new verified address.
+    positive_capabilities:
+      - change the email linked to an account
+      - update a user's sign-in email
+    exclusions:
+      - send an email message
+      - change another user's account
+    required_inputs:
+      - name: new_email
+        description: New email address.
+        aliases: [email]
+        pattern: '\b(?P<value>[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})\b'
+    preconditions:
+      - caller is authenticated
+      - address can be verified
+    side_effect: internal_write
+    risk_tier: medium
+    confirmation: always
+    examples:
+      - Change my account email to ali@example.com.
+    owner: identity-platform
+
+  - id: crm.find_contact
+    version: 1.0.0
+    name: Find a CRM contact
+    description: Search for one customer or prospect in the CRM and return matching contact records.
+    positive_capabilities:
+      - look up a customer
+      - find a CRM contact
+      - search contacts by name or email
+    exclusions:
+      - delete or update a contact
+      - contact the customer
+    required_inputs:
+      - name: search_term
+        description: Name or email supplied as structured context.
+    side_effect: read_only
+    risk_tier: low
+    confirmation: never
+    examples:
+      - Find the CRM record for Jane Doe.
+    owner: crm-platform
+
+  - id: communications.send_welcome_email
+    version: 1.0.0
+    name: Send a welcome email
+    description: Send the approved welcome email template to one newly registered user.
+    positive_capabilities:
+      - welcome a newly registered user by email
+      - send the account welcome template
+    exclusions:
+      - write a custom email
+      - send bulk email
+      - reset a password
+    required_inputs:
+      - name: recipient
+        description: Verified recipient email in trusted event context.
+        aliases: [email]
+    preconditions:
+      - user registration is complete
+    side_effect: external_write
+    risk_tier: medium
+    confirmation: event_authorized
+    event_types:
+      - user_registered
+    examples:
+      - Send the new user our welcome email.
+    owner: lifecycle-platform

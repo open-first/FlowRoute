@@ -1,0 +1,29 @@
+schema_version: "1"
+bundle_version: replace-with-release-id
+created_at: 2026-09-04T00:00:00Z
+
+catalog_version: demo-2026-09-04
+catalog_content_hash: 4d7face4489690cdab4dfbab76f4396c416abf4a5e57552ebd232408aae1fbe5
+serializer_version: flowroute-contract-v1
+
+retriever_model_version: replace-with-immutable-retriever-version
+verifier_model_version: replace-with-immutable-verifier-version
+retriever_query_prefix: ""
+retriever_document_prefix: ""
+verifier_label_order:
+  - mismatch
+  - needs_input
+  - executable
+allow_exact_event_routes: false
+
+calibration_version: demo-baseline-2026-09-04
+calibration_content_hash: 9e48a6b8f83b341c51391c5d83ed991335460229c34540d888c496c44c5ac2fc
+policy_content_hash: 154a0aa71fe54f79fb8dee0b98d5af86b205bafaa9f8d5189468eece0cdeda33
+top_k: 8
+
+artifact_hashes:
+  retriever: "0000000000000000000000000000000000000000000000000000000000000000"
+  verifier: "0000000000000000000000000000000000000000000000000000000000000000"
+
+approved_for_production: false
+approval_reference: null

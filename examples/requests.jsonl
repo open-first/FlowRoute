@@ -1,0 +1,15 @@
+{"id":"route_order_status","text":"Where is order 4812?","expected_decision":"ROUTE","expected_workflow_id":"orders.get_status"}
+{"id":"clarify_order_id","text":"Can you check my order status?","expected_decision":"CLARIFY","expected_workflow_id":"orders.get_status"}
+{"id":"route_cancel_event","text":"Cancel my design review tomorrow at 3 PM.","context":{"event_id":"evt_review_3pm"},"expected_decision":"ROUTE","expected_workflow_id":"calendar.cancel_event"}
+{"id":"clarify_cancel_event","text":"Cancel my meeting tomorrow.","expected_decision":"CLARIFY","expected_workflow_id":"calendar.cancel_event"}
+{"id":"route_create_event","text":"Schedule a product review tomorrow.","context":{"title":"Product review","start_time":"2026-09-05T15:00:00+04:00"},"expected_decision":"ROUTE","expected_workflow_id":"calendar.create_event"}
+{"id":"route_update_email","text":"Change my account email to ali@example.com.","expected_decision":"ROUTE","expected_workflow_id":"account.update_email"}
+{"id":"route_refund","text":"Refund payment pay_90210.","expected_decision":"ROUTE","expected_workflow_id":"billing.refund_payment"}
+{"id":"event_rule","text":"A user registered.","context":{"email":"new.user@example.com"},"event_type":"user_registered","expected_decision":"ROUTE","expected_workflow_id":"communications.send_welcome_email"}
+{"id":"event_missing_recipient","text":"A user registered.","event_type":"user_registered","expected_decision":"CLARIFY","expected_workflow_id":"communications.send_welcome_email"}
+{"id":"reasoning_fallback","text":"Which subscription plan is best for my startup?","expected_decision":"LLM_REQUIRED","expected_workflow_id":null}
+{"id":"ood_fallback","text":"Explain quantum entanglement to a child.","expected_decision":"LLM_REQUIRED","expected_workflow_id":null}
+{"id":"multi_action_fallback","text":"Find the customer's payment and then refund it.","context":{"payment_id":"pay_82"},"expected_decision":"LLM_REQUIRED","expected_workflow_id":null}
+{"id":"near_miss_decline","text":"Decline the invitation to tomorrow's meeting.","expected_decision":"LLM_REQUIRED","expected_workflow_id":null}
+{"id":"empty_allowlist","text":"Where is order 4812?","allowed_workflow_ids":[],"expected_decision":"LLM_REQUIRED","expected_workflow_id":null}
+
