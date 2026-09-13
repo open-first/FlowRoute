@@ -4,6 +4,7 @@
 
 ### Added
 
+- First release published to PyPI as `flowroute`, installable with `pip install flowroute`.
 - Fail-closed production and shadow runtime modes.
 - Approved artifact manifests with compatibility and local checkpoint hash verification.
 - Atomic router bundle replacement and rollback with generation guards.

@@ -27,6 +27,14 @@ of three typed outcomes and never executes the selected workflow.
     orchestrator must still check authorization, typed inputs, live preconditions,
     confirmation, and idempotency before performing side effects.
 
+## Install
+
+```bash
+pip install flowroute
+```
+
+Published on [PyPI](https://pypi.org/project/flowroute/). Requires Python 3.10 or newer.
+
 ## Start here
 
 1. [Install FlowRoute](getting-started/installation.md).

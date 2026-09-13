@@ -1,5 +1,6 @@
 # FlowRoute
 
+[![PyPI](https://img.shields.io/pypi/v/flowroute)](https://pypi.org/project/flowroute/)
 [![CI](https://github.com/open-first/FlowRoute/actions/workflows/ci.yml/badge.svg)](https://github.com/open-first/FlowRoute/actions/workflows/ci.yml)
 [![Docs](https://github.com/open-first/FlowRoute/actions/workflows/docs.yml/badge.svg)](https://open-first.github.io/FlowRoute/)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
@@ -72,10 +73,16 @@ Requires Python 3.10 or newer.
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -e .
+pip install flowroute
+```
+
+The demo catalog is not shipped inside the package. Fetch it from the tagged source:
+
+```bash
+curl -O https://raw.githubusercontent.com/open-first/FlowRoute/v0.2.0/examples/workflows.yaml
 
 flowroute route \
-  --catalog examples/workflows.yaml \
+  --catalog workflows.yaml \
   --text "Where is order 4812?" \
   --debug
 ```
@@ -98,6 +105,12 @@ flowroute evaluate \
   --calibration configs/calibration.yaml \
   --data examples/requests.jsonl \
   --fail-on-error
+```
+
+The fixture suite reads files from the repository, so clone it first:
+
+```bash
+git clone https://github.com/open-first/FlowRoute.git && cd FlowRoute
 ```
 
 Run unit tests without installing development tools:
@@ -151,8 +164,8 @@ otherwise eligible workflows may be considered.
 ## HTTP API
 
 ```bash
-pip install -e ".[api]"
-flowroute serve --catalog examples/workflows.yaml --port 8000
+pip install "flowroute[api]"
+flowroute serve --catalog workflows.yaml --port 8000
 ```
 
 ```bash
@@ -243,7 +256,7 @@ See [Production mode](https://open-first.github.io/FlowRoute/operations/producti
 Install the ML extra:
 
 ```bash
-pip install -e ".[hf]"
+pip install "flowroute[hf]"
 ```
 
 ```python
@@ -270,6 +283,8 @@ The `training/` directory contains:
 - a current Sentence Transformers trainer entry point;
 - a Transformers three-class verifier entry point; and
 - model/dataset card templates with explicit `TBD` fields.
+
+These scripts ship only in the repository, so run them from a clone:
 
 ```bash
 PYTHONPATH=src python training/build_demo_data.py \
