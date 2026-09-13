@@ -1,5 +1,8 @@
 site_name: FlowRoute Developer Docs
 site_description: Developer guide for safe, selective routing to deterministic workflows.
+site_url: https://open-first.github.io/FlowRoute/
+repo_url: https://github.com/open-first/FlowRoute
+repo_name: open-first/FlowRoute
 site_dir: site
 docs_dir: docs
 strict: true
@@ -47,11 +50,6 @@ nav:
       - Decisions and reasons: concepts/decisions.md
       - Safety boundary: concepts/safety-boundary.md
       - Architecture notes: architecture.md
-  - Models and data:
-      - Hugging Face backends: models/hugging-face.md
-      - Training: models/training.md
-      - Dataset design: models/dataset-design.md
-      - Evaluation: models/evaluation.md
   - Operations:
       - Production mode: operations/production-mode.md
       - Artifact manifests: operations/artifact-manifests.md
