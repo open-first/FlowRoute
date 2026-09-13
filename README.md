@@ -1,5 +1,10 @@
 # FlowRoute
 
+[![CI](https://github.com/open-first/FlowRoute/actions/workflows/ci.yml/badge.svg)](https://github.com/open-first/FlowRoute/actions/workflows/ci.yml)
+[![Docs](https://github.com/open-first/FlowRoute/actions/workflows/docs.yml/badge.svg)](https://open-first.github.io/FlowRoute/)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+
 FlowRoute is a small, safety-oriented router that maps a natural-language request to a
 deterministic workflow without using a generative LLM for the routing decision.
 
@@ -11,6 +16,25 @@ It returns exactly one of three outcomes:
 
 FlowRoute never executes workflows. Authorization, argument validation, confirmation,
 idempotency, and side effects remain in the workflow orchestrator.
+
+**[Read the documentation](https://open-first.github.io/FlowRoute/)** ·
+[Quick start](#quick-start) ·
+[Production mode](#production-mode)
+
+## When FlowRoute fits
+
+Use FlowRoute when:
+
+- workflows are narrow, named, and deterministic;
+- users express the same intent in varied language;
+- a safe fallback is available for ambiguous requests;
+- inference cost or latency matters; and
+- false routing is more expensive than abstention.
+
+Use an LLM or planner when the task requires explanation, advice, strategy, open-ended
+generation, or several dependent actions. FlowRoute is a selector, not an orchestrator, an agent
+framework, or a general-purpose intent classifier; its job is to decide whether a request belongs
+to a known workflow and to abstain when it does not.
 
 ## Status
 
@@ -36,6 +60,10 @@ flowchart TD
     F --> H["CLARIFY"]
     F --> I["LLM_REQUIRED"]
 ```
+
+Each stage may only narrow the candidate set. Retrieval proposes; the verifier judges one
+request-contract pair at a time; calibration decides whether the best candidate clears the risk
+tier it was assigned. Schema completeness is deterministic and can override an unsafe prediction.
 
 ## Quick start
 
@@ -78,10 +106,14 @@ Run unit tests without installing development tools:
 PYTHONPATH=src python -m unittest discover -s tests -v
 ```
 
-## Developer documentation
+## Documentation
 
-The complete developer guide is authored as portable Markdown under `docs/` and configured for
-MkDocs:
+The complete developer guide is published at
+**[open-first.github.io/FlowRoute](https://open-first.github.io/FlowRoute/)**. It covers
+installation, contracts, Python, HTTP and CLI integration, routing internals, training, dataset
+design, evaluation, safety, production requirements, and troubleshooting.
+
+The source is portable Markdown under `docs/`, configured for MkDocs:
 
 ```bash
 pip install -r requirements-docs.txt
@@ -93,10 +125,6 @@ Build a static site that can be uploaded to any static host:
 ```bash
 mkdocs build --strict
 ```
-
-Start with [the documentation home](docs/index.md). It covers installation, contracts, Python,
-HTTP and CLI integration, routing internals, training, dataset design, evaluation, safety,
-production requirements, and troubleshooting.
 
 ## Python API
 
@@ -140,6 +168,31 @@ curl -s http://127.0.0.1:8000/v1/route \
 The development service also exposes `GET /health`, `GET /health/live`, and
 `GET /health/ready`. A stale `catalog_version` returns HTTP 409.
 
+## Workflow contracts
+
+Contracts describe capability boundaries, inputs, effects, and risk—not executable code.
+
+```yaml
+- id: calendar.cancel_event
+  version: 1.0.0
+  name: Cancel a calendar event
+  description: Cancel one existing event the current user may modify.
+  positive_capabilities:
+    - cancel an existing meeting
+  exclusions:
+    - decline an invitation
+    - delete a recurring series without confirmation
+  required_inputs:
+    - name: event_id
+      pattern: '\b(?P<value>evt_[A-Za-z0-9_-]+)\b'
+  side_effect: external_write
+  risk_tier: medium
+  confirmation: required_if_recurring
+```
+
+For safety, external or destructive contracts must declare both exclusions and a confirmation
+policy. Regex extraction is optional; trusted structured context takes precedence.
+
 ## Production mode
 
 ```python
@@ -182,33 +235,8 @@ Production mode:
 - emits privacy-conscious structured telemetry; and
 - supports atomic bundle reload and rollback through `RouterRuntime`.
 
-See [Production mode](docs/operations/production-mode.md) and
-[Artifact manifests](docs/operations/artifact-manifests.md).
-
-## Workflow contracts
-
-Contracts describe capability boundaries, inputs, effects, and risk—not executable code.
-
-```yaml
-- id: calendar.cancel_event
-  version: 1.0.0
-  name: Cancel a calendar event
-  description: Cancel one existing event the current user may modify.
-  positive_capabilities:
-    - cancel an existing meeting
-  exclusions:
-    - decline an invitation
-    - delete a recurring series without confirmation
-  required_inputs:
-    - name: event_id
-      pattern: '\b(?P<value>evt_[A-Za-z0-9_-]+)\b'
-  side_effect: external_write
-  risk_tier: medium
-  confirmation: required_if_recurring
-```
-
-For safety, external or destructive contracts must declare both exclusions and a confirmation
-policy. Regex extraction is optional; trusted structured context takes precedence.
+See [Production mode](https://open-first.github.io/FlowRoute/operations/production-mode/) and
+[Artifact manifests](https://open-first.github.io/FlowRoute/operations/artifact-manifests/).
 
 ## Plug in Hugging Face checkpoints
 
@@ -278,6 +306,26 @@ docs/                   architecture and research implementation notes
 5. Fit calibration by risk tier on a separate split.
 6. Report false-route rate together with route coverage and confidence intervals.
 7. Fill every `TBD` in the model and dataset cards; publish checkpoint hashes.
+
+## Contributing
+
+Contributions are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) states the rules that protect the
+safety boundary: keep the router separate from workflow execution; add a regression test for every
+routing or abstention change; never weaken a risk threshold to make one example pass; and do not
+add benchmark numbers without a reproducible evaluation artifact.
+
+`main` is protected. Work on a branch and open a pull request; CI must pass on Python 3.10 and
+3.12, and documentation changes must also survive `mkdocs build --strict`.
+
+## Security
+
+Do not open a public issue for a suspected vulnerability. Use GitHub's private
+vulnerability-reporting feature, or follow [SECURITY.md](SECURITY.md).
+
+## Citation
+
+If you use FlowRoute in research, cite the software through [CITATION.cff](CITATION.cff). GitHub
+renders a ready-made citation from that file under **Cite this repository**.
 
 ## License
 
