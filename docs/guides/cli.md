@@ -57,7 +57,7 @@ The JSON result contains:
 ## Serve the API
 
 ```bash
-pip install -e ".[api]"
+pip install "flowroute[api]"
 flowroute serve \
   --catalog examples/workflows.yaml \
   --calibration configs/calibration.yaml \

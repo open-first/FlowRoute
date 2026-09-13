@@ -6,7 +6,7 @@ intended for local development; production uses explicit settings and an authori
 ## Install and run
 
 ```bash
-pip install -e ".[api]"
+pip install "flowroute[api]"
 flowroute serve \
   --catalog examples/workflows.yaml \
   --calibration configs/calibration.yaml \

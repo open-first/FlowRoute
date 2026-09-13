@@ -1,12 +1,19 @@
 # Quickstart
 
-This walkthrough uses the included demo catalog.
+This walkthrough needs a catalog. The published package does not ship one, so fetch the demo
+catalog from the tagged source:
+
+```bash
+curl -O https://raw.githubusercontent.com/open-first/FlowRoute/v0.2.0/examples/workflows.yaml
+```
+
+Working from a clone instead? Use `examples/workflows.yaml` in place of `workflows.yaml` below.
 
 ## Route from the CLI
 
 ```bash
 flowroute route \
-  --catalog examples/workflows.yaml \
+  --catalog workflows.yaml \
   --text "Where is order 4812?" \
   --debug
 ```
@@ -30,7 +37,7 @@ Scores and latency vary with the catalog, backend, hardware, and calibration bun
 ```python
 from flowroute import FlowRouter, RouteRequest, WorkflowRegistry
 
-registry = WorkflowRegistry.from_yaml("examples/workflows.yaml")
+registry = WorkflowRegistry.from_yaml("workflows.yaml")
 router = FlowRouter(registry)
 
 result = router.route(
@@ -58,7 +65,12 @@ else:
 
 ## Run the fixture evaluation
 
+The fixture suite reads several files that ship only in the repository, so run it from a clone:
+
 ```bash
+git clone https://github.com/open-first/FlowRoute.git
+cd FlowRoute
+
 flowroute evaluate \
   --catalog examples/workflows.yaml \
   --calibration configs/calibration.yaml \
