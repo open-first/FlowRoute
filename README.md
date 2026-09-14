@@ -300,6 +300,34 @@ python training/train_retriever.py \
 Do not publish the demo-derived checkpoint as a research result. Build workflow-disjoint train,
 calibration, and hidden test splits first.
 
+## Paper experiments
+
+The CLINC150 and BANKING77 results reported in the FlowRoute paper are
+reproduced by `experiments/run_benchmark.py`. The script downloads both
+datasets from their official repositories, verifies their SHA-256 digests,
+pins the `all-MiniLM-L6-v2` model revision, keeps the test splits out of every
+tuning decision, and records complete per-seed results.
+
+```bash
+cd experiments
+python -m venv .venv
+.venv/bin/pip install --index-url https://download.pytorch.org/whl/cpu torch==2.8.0
+.venv/bin/pip install -r requirements.txt
+HF_HOME=cache .venv/bin/python run_benchmark.py
+```
+
+`experiments/results/benchmark_results.json` is the record the paper's tables
+are derived from: per-seed metrics, selected thresholds, model revision, source
+URLs, checksums, and the environment. `experiments/results/ranking_summary.csv`
+is a compact view of the ranking table.
+
+Note that the scoring rule benchmarked in the paper is not the one used by
+`flowroute.backends.HuggingFaceRetriever`. The paper embeds each workflow
+description and each approved example separately and takes the maximum example
+similarity; the shipped retriever embeds one concatenated capability string per
+contract. The two are not interchangeable, and the paper's numbers correspond
+to the former.
+
 ## Repository map
 
 ```text
